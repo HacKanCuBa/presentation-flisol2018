@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="es">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Galería del horror del voto electrónico</title>
+
+		<meta name="description" content="Una galería de errores notables en sistemas de voto electrónico de distinta naturaleza en diferentes lugares del mundo. Porque está bueno aprender de los errores de otros">
+		<meta name="author" content="Barrera Oro, Iván y Smaldone, Javier">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="vendor/reveal.js/css/reveal.css">
+		<link rel="stylesheet" href="vendor/reveal.js/css/theme/moon.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="vendor/reveal.js/lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'vendor/reveal.js/css/print/pdf.css' : 'vendor/reveal.js/css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="vendor/reveal.js/lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<div class="slides">
+				<section>
+					<section data-background="assets/imgs/theshining.jpg">
+						<h1>Galería del horror del voto electrónico</h1>
+					</section>
+
+					<section data-background="assets/imgs/flisol.png">
+						<h2>FLISoL CABA 2018, día 2</h2>
+						<p>Una galería de errores notables en sistemas de voto electrónico de distinta naturaleza en diferentes lugares del mundo. Porque está bueno aprender de los errores de otros.</p>
+						<p>
+							<small><a href="https://twitter.com/mis2centavos">Javier Smaldone</a> e <a href="https://twitter.com/hackancuba">Iván Barrera Oro</a></small>
+						</p>
+					</section>
+				</section>
+
+				<section>
+					<section data-background="assets/imgs/alien.jpg">
+						<h1>Bugs</h1>
+					</section>
+
+				<section>
+					<h2>Bélgica</h2>
+				</section>
+				<section>
+					<p>2014 - Jites</p>
+					<pre><code class="cpp" data-trim contenteditable style="max-height: 500px;">
+#ifdef EL2014
+/*********************************************************
+<FUNCTION>
+<NAME> Cand_Unselect </NAME>
+<TYPE> GLOBAL </TYPE>
+<DESCRIPTION>
+Specify that a selection has been undone
+</DESCRIPTION>
+</FUNCTION>
+*********************************************************/
+void Cand_Unselect(int_x, int_y, int_z)
+{
+    arcMemoCandid[_x][_y][_z] = 0;
+    //280613 arcMemoList[_x][_y] = 0;
+    //280613 arcMemoScrutin[_x] = 0;
+}
+#endif /* EL2014 */
+					</code></pre>
+				</section>
+				<section>
+					<p>2004 - Digivote</p>
+					<pre><code class="cpp" data-trim>
+#define MULTIPLIER 0x015a4e35L /* 22,695,477 */
+#define INCREMENT 1
+static long Seed = 1;
+void srand(unsigned seed) {
+    Seed = seed;
+}
+int rand(void) {
+    Seed = MULTIPLIER * Seed + INCREMENT;
+    return((int)(Seed >> 16) & 0x7fff);
+}
+#define RAND_MAX 0x7FFFU
+#define randomize() srand((unsigned)time(NULL))
+#define random(num)(int)(((long)rand()*(num))/(RAND_MAX+1))
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Brasil</h2>
+				</section>
+				<section>
+					<p>2012</p>
+					<pre><code class="cpp" data-trim>
+srand(time(NULL));
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>EE. UU.</h2>
+				</section>
+				<section>
+					<p>2010, Washington DC</p>
+					<pre><code class="ruby" data-trim style="max-height: 500px;">
+module Paperclip
+  class Encrypt < Processor
+    def initialize(file, options = {}, attachment = nil)
+      super
+      ...
+      @recipient = options[:geometry]
+      @current_format = File.extname(@file.path)
+      @basename = File.basename(@file.path, @current_format)
+    end
+
+    def make
+      src = @file
+      dst = Tempfile.new([@basename, 'gpg'].compact.join("."))
+      dst.binmode
+      begin
+        run("rm", "-f \"#{File.expand_path(dst.path)}\"")
+        run("gpg", "--trust-model always -o
+\"#{File.expand_path(dst.path)}\" -e -r \"#{@recipient}\" ...")
+      end
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Argentina</h2>
+				</section>
+				<section>
+					<p>2015 - Vot.Ar, MSA</p>
+					<pre><code class="python" data-trim style="max-height: 500px;">
+def crear_qr(datos):
+qr = None
+fd, temp_path = mkstemp(suffix='.png', prefix='qr_tmp_')
+tmpl_comando = u'qrencode -o %s -s%s -m0 -l%s "%s"'
+comando = tmpl_comando % (temp_path, unicode(QR_PIXEL_SIZE),
+                          QR_ERROR_LEVEL, u''.join(datos))
+os.system(comando)
+					</code></pre>
+				</section>
+				<section>
+					<p>2015 - Vot.Ar, MSA</p>
+					<pre><code class="python" data-trim style="max-height: 500px;">
+for elem in datos_tag.voto_categoria:
+cod_categoria = elem["cod_categoria"].strip()
+cod_candidato = elem["cod_candidatura"].strip()
+if cod_candidato == COD_LISTA_BLANCO:
+candidato = Candidato.one(codigo__endswith=cod_candidato,
+                          cod_categoria=cod_categoria)
+else:
+    candidato = Candidato.one(codigo__endswith="." + cod_candidato,
+                              cod_categoria=cod_categoria)
+candidatos.append(candidato)
+					</code></pre>
+				</section>
+				<section>
+					<p>2015 - Vot.Ar, MSA</p>
+					<pre><code class="python" data-trim style="max-height: 500px;">
+rampa_corriendo = False
+
+def semaforo(func)
+    """Decorador que hace que no se puedan hacer 2 cosas al mismo
+    tiempo.
+
+    La idea es evitar las race conditions que teniamos con la
+    rampa anterior.
+    """
+    def _inner(self, *args, **kwargs):
+        global rampa_corriendo
+        if not rampa_corriendo:
+            rampa_corriendo = True
+            func(self, *args, **kwargs)
+            rampa_corriendo = False
+    return _inner
+						</code></pre>
+					</section>
+				</section>
+
+				<section>
+					<section data-background="assets/imgs/paleman.jpg">
+						<h1>Opsec</h1>
+					</section>
+
+					<section>
+						<h2>EE. UU.</h2>
+					</section>
+					<section>
+						<h2>2003 - Diebold</h2>
+						<p>Acceso público al FTP con código fuente, y más</p>
+						<img src="assets/imgs/bev_harris.jpg" alt="Hacking Democracy" />
+					</section>
+					<section>
+						<h2>2003 - Diebold</h2>
+						<p>Fabricar llaves desde una imagen no se puede, ¿no?</p>
+						<img src="assets/imgs/dieboldkeys.jpg" alt="Hacking Democracy" style="width: 50% !important;" />
+					</section>
+					<section>
+						<h2>2010, Washington DC</h2>
+						<p>¡Saludá a la cámara!</p>
+						<img src="assets/imgs/halderman_washington.jpg" alt="Halderman" />
+					</section>
+
+					<section>
+						<h2>Estonia</h2>
+					</section>
+					<section>
+						<h2>2013</h2>
+						<p>Escribí tranquilo la password de <code>root</code></p>
+						<img src="assets/imgs/estonia_1.jpg" alt="Escribiendo la clave de root" />
+					</section>
+					<section>
+						<h2>2013</h2>
+						<p>Poco ocurrente ese memo...</p>
+						<img src="assets/imgs/estonia_2.jpg" alt="Memo con password" />
+					</section>
+					<section>
+						<h2>2013</h2>
+						<p>Otra llave más, y van...</p>
+						<img src="assets/imgs/estonia_3.jpg" alt="Rack con llave" />
+					</section>
+
+					<section>
+						<h2>Alemania</h2>
+					</section>
+					<section>
+						<h2>2014 - PC Wahl 10</h2>
+						<img src="assets/imgs/alemania2014.png" alt="PC Wahl 10 network share" />
+					</section>
+
+					<section>
+						<h2>Australia</h2>
+					</section>
+					<section>
+						<h2>2015</h2>
+						<p>Llamen a Sysarmy</p>
+						<img src="assets/imgs/australia.jpg" alt="Qualys SSL Labs test" />
+					</section>
+
+					<section>
+						<h2>Argentina</h2>
+					</section>
+					<section>
+						<h2>Vot.Ar, MSA</h2>
+						<p>¡Los CDs no pueden caer en malas manos! -Secretaria Electoral Ovejero dixit</p>
+						<img src="assets/imgs/cdsalta.jpg" alt="Discos de Vot.Ar" style="width: 55% !important;" />
+					</section>
+					<section>
+						<h2>2011 - Vot.Ar, MSA, Salta</h2>
+						<p>Poneme otro disco, no hay drama</p>
+						<img src="assets/imgs/tecnicosalta.jpg" alt="Cambiando CDs" style="width: 65% !important;" />
+					</section>
+					<section>
+						<h2>2015 - Vot.Ar, MSA</h2>
+						<p>Certificados SSL, ¡al público!</p>
+						<pre><code class="hljs" data-trim style="max-height: 500px;">
+CABA.1.1-Instituto_Vocacional_De_Arte.pkey
+
+-----BEGIN PRIVATE KEY-----
+MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBANw15kua+URBshxG
+0Gm1xYg3+Hnb/tcxw/PhUZ9E5totyY54kORwsPea30VRogQ2bOrkFzXEzYyF1e0G
+niT7OGUU+uktK/EVnaaLt/cLDISiaTywsqCtHGdqKFqxC4TTsirFl2JBe375x4ii
+AHNHY24Mnr+Ggdw6Tps6jb1YTcoTAgMBAAECgYBMh47Zh6pJRmuX2CRmGH3lsU3x
+S7ttHiZzg0LSjyeLe44orU3tlhxqcLBXbt9Xh3Kiz1IhpZup0nlePoaHY6ddFLm6
+ghsShpCeHU0KmDQncSVTOBEL72JHiHfqxlpVYisQUhaxcKZQVK5CNpflyNM3WUVe
+ei3ZST5if+kNXU/6QQJBAPCbmwMYvNkSsbxHRp66eQKqjdqn9EOnzC0eAXazmsg7
+/+/hNEsyyz9U/6qc7XO4SAun9F67XdJg48qIKar38icCQQDqTEBGESx8K5bePcvK
+HsuhwmkWjkUuCflxYSyOuFsFyqnVLubA3+9mqJbCZxIAtPKcBYsMTSdf1uzHYiJl
+sxg1AkBitROE07M1wouT2BHKsGlQhLOpTlnRH5eNss+a6NfI6YR33oXbi70CAFba
+oYJwhNtZnM+NxYQZ+JG61t1xPELlAkBsOyENvO0xxukAbMdw7NzgMnBdDQeEBvOF
+nn/4xcy2VjIx2mKaAlgSshpCX15/mRbhX+YlnpZrvVrPl9OP6zVpAkEAydWtap7D
+wHSTtypsURdUqciPB+WCd68aLOwZJkxsptrc/Ru5tx9MNuIzBqzge9sabe4w9ynj
+H7PcGWmO2ZDzJw==
+-----END PRIVATE KEY-----
+						</code></pre>
+					</section>
+					<section>
+						<h2>2017 - Vot.Ar, MSA, Chaco</h2>
+						<p>¿Era secreto el acto de votar?</p>
+						<img src="assets/imgs/chaco.jpg" alt="Votando... para las cámaras" />
+					</section>
+				</section>
+
+				<section>
+					<section data-background="assets/imgs/frankenstein.jpg">
+						<h1>Diseño</h1>
+					</section>
+
+					<section>
+						<h2>EE. UU.</h2>
+					</section>
+					<section>
+						<h2>2003 - GEMS, Diebold</h2>
+						<p>Dumpeame que me gusta</p>
+						<img src="assets/imgs/gems.png" alt="Dump DB" />
+					</section>
+
+					<section>
+						<h2>Alemania</h2>
+					</section>
+					<section>
+						<h2>2014 - PC Wahl 10</h2>
+						<p>"Elementary principles of IT-security were not heeded to. The amount of vulnerabilities and their severity exceeded our worst expectations" -Linus Neumann</p>
+						<img src="assets/imgs/logopc-wahl.jpg" alt="Logo PC Wahl 10" />
+					</section>
+
+					<section>
+						<h2>Venezuela</h2>
+					</section>
+					<section>
+						<h2>Desde siempre</h2>
+						<p>Los tenemos a todos identificados -Pte. Chávez dixit</p>
+						<img src="assets/imgs/venezuela.jpg" alt="Huella dactilar" />
+					</section>
+
+					<section>
+						<h2>Argentina</h2>
+					</section>
+					<section>
+						<h2>2007-2018 - Vot.Ar, MSA</h2>
+						<p>RFID</p>
+						<img src="assets/imgs/evoting-rfid.jpg" alt="Search: evoting+rfid" />
+					</section>
+					<section>
+						<h2>2015-2017 - Vot.Ar, MSA</h2>
+						<p>Autenticación: 2 bytes para ser técnico o presidente de mesa, o...</p>
+						<pre><code class="python" data-trim style="max-height: 500px;">
+COD_TAG_VACIO = '\x00\x00'
+COD_TAG_VOTO = '\x00\x01'
+COD_TAG_USUARIO_MSA = '\x00\x02'
+COD_TAG_PRESIDENTE_MESA = '\x00\x03'
+COD_TAG_RECUENTO = '\x00\x04'
+COD_TAG_APERTURA = '\x00\x05'
+COD_TAG_DEMO = '\x00\x06'
+COD_TAG_VIRGEN = '\x00\x07'
+COD_TAG_INICIO = '\x00\x7F'
+COD_TAG_ADDENDUM = '\x00\x80'
+COD_TAG_NO_ENTRA = '\x00\x45'
+COD_TAG_DESCONOCIDO = '\xff\xff'
+						</code></pre>
+					</section>
+					<section>
+						<h2>2016 - Altec</h2>
+						<p>¡Huella dactilar!</p>
+						<img src="assets/imgs/altec.jpg" alt="Máquina de Altec con lector de huella dactilar" />
+					</section>
+				</section>
+
+				<section>
+					<section data-background="assets/imgs/poltergeist.jpg">
+						<h1>Side channel</h1>
+					</section>
+
+					<section>
+						<h2>Holanda</h2>
+					</section>
+					<section>
+						<h2>2008 - CDA</h2>
+						<p>Se podía detectar e identificar votos a distancias de hasta 25m</p>
+						<img src="assets/imgs/holandasidechannel.png" alt="Tempest scanner" style="width: 70% !important;" />
+					</section>
+
+					<section>
+						<h2>Brasil</h2>
+					</section>
+					<section>
+						<h2>2017</h2>
+						<p>Se podía detectar e identificar votos con una simple radio FM en 89.1MHz</p>
+						<img src="assets/imgs/brasilsidechannel.jpg" alt="Hack con radio FM" style="width: 75% !important;" />
+					</section>
+
+					<section>
+						<h2>Argentina</h2>
+					</section>
+					<section>
+						<h2>2016</h2>
+						<p>NEMO: se puede detectar y eventualmente identificar votos con una radio de onda corta</p>
+						<img src="assets/imgs/argentinachannel.jpg" alt="NEMO: Hack con radio OC" />
+					</section>
+				</section>
+
+				<section data-background="assets/imgs/ouija-board.jpg">
+					<h1>¿Preguntas?</h1>
+				</section>
+
+				<section data-background="assets/imgs/hacktheplanet.jpg">
+					<h1>Hack the planet!</h1>
+					<!--<p>Seguinos en:</p>
+					<ul>
+						<li>Javier
+							<ul>
+								<li><a href="https://twitter.com/mis2centavos">@mis2centavos</a></li>
+								<li><a href="https://blog.smaldone.com.ar">blog.smaldone.com.ar</a></li>
+							</ul>
+						</li>
+						<li>Iván || HacKan
+							<ul>
+								<li><a href="https://twitter.com/hackancuba">@hackancuba</a></li>
+								<li><a href="https://ivan.barreraoro.com.ar">ivan.barreraoro.com.ar</a></li>
+								<li><a href="https://hackan.net">hackan.net</a></li>
+							</ul>
+						</li>
+					</ul>-->
+					<h3>Seguinos en:</h3>
+					<p><br /></p>
+					<pre><code class="hljs" data-trim style="max-height: 500px;">
+   * Javier
+       * @mis2centavos
+       * blog.smaldone.com.ar
+   * Iván || HacKan
+       * @hackancuba
+       * ivan.barreraoro.com.ar
+       * hackan.net
+
+						</code></pre>
+					<p style="text-align: right;"><br />Licencia <strong>CC BY-NC-SA 4.0</strong></p>
+				<section>
+
+		<script src="vendor/reveal.js/lib/js/head.min.js"></script>
+		<script src="vendor/reveal.js/js/reveal.js"></script>
+
+		<script>
+
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'vendor/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					//{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					//{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'vendor/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					//{ src: 'plugin/search/search.js', async: true },
+					//{ src: 'plugin/zoom-js/zoom.js', async: true },
+					//{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
